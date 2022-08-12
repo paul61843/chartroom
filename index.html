@@ -7,10 +7,97 @@
     <title>chartroom</title>
 </head>
 <body>
-    <textarea id="txtShow" disabled></textarea>
-    <input id="txtInput" type="text">
-    <button id="btnSend" onclick="sendMessage()">送出</button>
+  <div class="container">
+    <main class="card">
+      <section class="side">
+        <input type="text" />
+        <ul class="user-list">
+          <li class="user-item">
+            <img class="avatar" src="https://picsum.photos/50/50" alt="avatar">
+            <div class="user-info">
+              <p>name 1</p>
+              <p>online</p>
+            </div>
+          </li>
+          <li class="user-item">
+            <img class="avatar" src="https://picsum.photos/50/50" alt="avatar">
+            <div class="user-info">
+              <p>name 1</p>
+              <p>online</p>
+            </div>
+          </li>
+          <li class="user-item">
+            <img class="avatar" src="https://picsum.photos/50/50" alt="avatar">
+            <div class="user-info">
+              <p>name 1</p>
+              <p>online</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="content">
+        <textarea id="txtShow" disabled></textarea>
+        <input id="txtInput" type="text">
+        <button id="btnSend" onclick="sendMessage()">送出</button>
+      </section>
+    </main>
+</div>
+
 </body>
+<style>
+  body {
+    margin: 0;
+    background-color: #f4f7f6;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  .card {
+    display: flex;
+    max-width: 1280px;
+    height: 400px;
+    background: #fff;
+    border-radius: 10px;
+  }
+
+  .side {
+    padding: 1rem;
+    border-right: 2px solid #f4f7f6;
+  }
+
+  .user-list {
+    padding: 0;
+    margin: .5rem 0 0 0;
+  }
+
+  .user-item {
+    display: flex;
+    padding: .5rem;
+  }
+
+  .user-item:hover {
+    background: #efefef;
+  }
+
+  .user-item .avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+  }
+
+  .user-info {
+    padding-left: 1rem;
+  }
+
+  .user-info p {
+    margin: 0;
+  }
+</style>
 <script>
   // 建立 WebSocket (本例 server 端於本地運行)
   let url = `ws://localhost:5500`
