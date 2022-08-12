@@ -9,36 +9,49 @@
 <body>
     <textarea id="txtShow" disabled></textarea>
     <input id="txtInput" type="text">
-    <button id="btnSend">送出</button>
+    <button id="btnSend" onclick="sendMessage()">送出</button>
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", event => { 
-  let keyinDom = document.querySelector('#txtInput')
-  let showDom = document.querySelector('#txtShow')
-
-  document.querySelector("#btnSend").addEventListener('click',() => {
-    let txt = keyinDom.value;
-    ws.send(txt);
-  })
-
   // 建立 WebSocket (本例 server 端於本地運行)
   let url = `ws://localhost:5500`
-  var ws = new WebSocket(url)
-  // 監聽連線狀態
-  ws.onopen = () => {
-    console.log('open connection')
+  let webSocket = new WebSocket(url);
+
+  let keyinElem = document.querySelector('#txtInput');
+  let showElem = document.querySelector('#txtShow');
+
+  initWebSocket();
+  getMessage();
+
+  function initWebSocket() {
+    // 監聽連線狀態
+    webSocket.onopen = () => {
+      console.log('open connection')
+    }
+
+    webSocket.onclose = () => {
+      console.log('close connection');
+    }
   }
-  ws.onclose = () => {
-    console.log('close connection');
-  }
+
   //接收 Server 發送的訊息
-  ws.onmessage = event => {
-    console.log(true);
-    let txt = event.data
-    if (!showDom.value) showDom.value = txt
-    else showDom.value = showDom.value + "\n" + txt
-    keyinDom.value = ""
+  function getMessage() {
+    webSocket.onmessage = event => {
+      let txt = event.data
+      if (!showElem.value) showElem.value = txt
+      else showElem.value = showElem.value + "\n" + txt
+      keyinElem.value = ""
+    }
   }
-});
+
+  function sendMessage() {
+    let txt = keyinElem.value;
+    console.log(webSocket)
+    webSocket.send(txt);
+  }
+
+  function onButtonClick(event) {
+    let txt = keyinElem.value;
+      webSocket.send(txt);
+  }
 </script>
 </html>

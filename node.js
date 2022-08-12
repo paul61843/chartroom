@@ -4,10 +4,6 @@ const SocketServer = require('ws').Server;
 const app = express();
 const PORT = 5500;
 
-// app.get('/', (req, res) => {
-//     res.send('Hello, World!');
-// });
-
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
