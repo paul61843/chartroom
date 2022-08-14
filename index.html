@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue@next"></script>
     <title>chartroom</title>
 </head>
 <body>
@@ -48,31 +48,23 @@
 </body>
 
 <script type="module">
-new Vue({
-  el: '#app',
-  data() {
-    return {
-      url: `ws://localhost:5500`, 
-      webSocket: null,
-      userList: [
+const { ref, reactive, readonly, computed } = Vue;
+
+const App = {
+  setup () {
+    const url = 'ws://localhost:5500';
+    const webSocket = new WebSocket(url);
+    const userList = [
         { name: 'name 1', avatar: 'https://picsum.photos/50/50', online: 'online', alt: 'avatar 1' },
         { name: 'name 2', avatar: 'https://picsum.photos/50/50', online: 'online', alt: 'avatar 2' },
         { name: 'name 3', avatar: 'https://picsum.photos/50/50', online: 'online', alt: 'avatar 3' },
-      ],
-      
-      // form value
-      message: '',
-      chatConent: '',
-    }
-  },
-  mounted() {
-    // 建立 WebSocket (本例 server 端於本地運行)
-    this.webSocket = new WebSocket(this.url)
-    this.initWebSocket();
-    this.getMessage();
-  },
-  methods: {
-    initWebSocket() {
+      ];
+
+    // form value
+    const message = ref('');
+    const chatConent = ref('');
+
+    function initWebSocket() {
       // 監聽連線狀態
       this.webSocket.onopen = () => {
         console.log('open connection')
@@ -81,22 +73,40 @@ new Vue({
       this.webSocket.onclose = () => {
         console.log('close connection');
       }
-    },
+    }
+
     //接收 Server 發送的訊息
-    getMessage() {
+    function getMessage() {
       this.webSocket.onmessage = event => {
         let txt = event.data
         if (!this.chatConent) this.chatConent = txt
         else this.chatConent = this.chatConent + "\n" + txt
       }
-    },
-    sendMessage() {
-      console.log('sendMessage', this.message)
-      this.webSocket.send(this.message);
-      this.message = '';
+    }
+
+    function sendMessage() {
+      this.webSocket.send(message.value);
+      message.value = '';
+    }
+
+    return {
+      webSocket,
+      userList,
+      message,
+      chatConent,
+
+      initWebSocket,
+      getMessage,
+      sendMessage
     }
   },
-})
+  mounted() {
+    // 建立 WebSocket (本例 server 端於本地運行)
+    this.initWebSocket();
+    this.getMessage();
+  },
+};
+Vue.createApp(App).mount("#app");
 </script>
 <style>
   /* reset */
