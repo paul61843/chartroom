@@ -52,7 +52,7 @@ const { ref, reactive, readonly, computed } = Vue;
 
 const App = {
   setup () {
-    const url = 'ws://localhost:5500';
+    const url = 'ws://207.148.111.79:5500';
     const webSocket = new WebSocket(url);
     const userList = [
         { name: 'name 1', avatar: 'https://picsum.photos/50/50', online: 'online', alt: 'avatar 1' },
@@ -130,8 +130,6 @@ Vue.createApp(App).mount("#app");
 
   .card {
     display: flex;
-    max-width: 800px;
-    width: 90vw;
     height: 500px;
     background: #fff;
     border-radius: 10px;
