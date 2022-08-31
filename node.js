@@ -30,3 +30,5 @@ socket.on('connection', ws => {
         console.log('close connected');
     })
 })
+
+module.exports = app;
